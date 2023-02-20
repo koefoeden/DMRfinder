@@ -1,0 +1,5 @@
+Loading DSS package
+Loading methylation data from results/combined.csv 
+Comparing group "Control" to group "Exptl"
+  Estimating dispersion for each CpG site, this will take a while ...
+Producing output file results/results.csv 

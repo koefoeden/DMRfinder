@@ -1,0 +1,9 @@
+Processing the SAM file
+Reads analyzed: 489291
+  Mapped: 489291
+  Total CpG methylation values in the reads: 1887742
+    Methylated: 602203
+    Unmethylated: 1285539
+    Percent methylated: 31.9%
+Printing the output file
+Genomic CpG sites printed: 1081692

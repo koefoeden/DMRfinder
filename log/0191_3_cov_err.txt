@@ -1,0 +1,11 @@
+Processing the SAM file
+Traceback (most recent call last):
+  File "extract_CpG_data.py", line 506, in <module>
+    main()
+  File "extract_CpG_data.py", line 466, in main
+    = parseSAM(infile, bedRegions, bedSites, linkedMeth, sortOpt,
+  File "extract_CpG_data.py", line 382, in parseSAM
+    count1, count2 = loadMeth(cigar, strXM, chrom, pos, rc, \
+  File "extract_CpG_data.py", line 242, in loadMeth
+    (rc and cigPos > 0 and cigar[cigPos-1] == 'I'):
+KeyboardInterrupt

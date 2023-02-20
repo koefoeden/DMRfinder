@@ -1,0 +1,11 @@
+Processing the SAM file
+Traceback (most recent call last):
+  File "extract_CpG_data.py", line 506, in <module>
+    main()
+  File "extract_CpG_data.py", line 466, in main
+    = parseSAM(infile, bedRegions, bedSites, linkedMeth, sortOpt,
+  File "extract_CpG_data.py", line 335, in parseSAM
+    if getTag(spl[11:], 'XG') == 'GA':
+  File "extract_CpG_data.py", line 193, in getTag
+    if spl[0] == tag:
+KeyboardInterrupt

@@ -1,0 +1,15 @@
+Processing the SAM file
+Traceback (most recent call last):
+  File "extract_CpG_data.py", line 506, in <module>
+    main()
+  File "extract_CpG_data.py", line 466, in main
+    = parseSAM(infile, bedRegions, bedSites, linkedMeth, sortOpt,
+  File "extract_CpG_data.py", line 370, in parseSAM
+    cigar = parseCigar(spl[5])
+  File "extract_CpG_data.py", line 181, in parseCigar
+    ops = re.findall(r'(\d+)([IDM])', cigar)
+  File "/opt/anaconda3/lib/python3.8/re.py", line 241, in findall
+    return _compile(pattern, flags).findall(string)
+  File "/opt/anaconda3/lib/python3.8/re.py", line 291, in _compile
+    if isinstance(flags, RegexFlag):
+KeyboardInterrupt

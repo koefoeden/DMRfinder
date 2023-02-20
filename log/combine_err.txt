@@ -1,0 +1,10 @@
+/Users/tqb695/GitHub_repositories/DMRfinder/combine_CpG_sites.py:59: DeprecationWarning: 'U' mode is deprecated
+  f = open(filename, 'rU')
+Loading methylation information
+  file: results/0168_51.cov
+  file: results/0168_52.cov
+  file: results/0168_53.cov
+  file: results/0168_54.cov
+Combining regions and producing output
+Genomic regions printed: 24079
+Valid sample names: 0168_51 0168_52 0168_53 0168_54

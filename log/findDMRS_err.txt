@@ -1,0 +1,4 @@
+There were 21 warnings (use warnings() to see them)
+Error in if (substr(level[i], 1, 3) == "chr") { : 
+  argument is of length zero
+Execution halted
