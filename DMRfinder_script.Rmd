@@ -1,0 +1,88 @@
+# Arguments -------------------------------------------------------------------
+```{r setup}
+library(tidyverse)
+
+datadir <- "data_full"
+outdir <- "results"
+cores <- 12
+log <- "log"
+metadata <- "metadata"
+grouping <- "Condition1"
+
+
+future::plan(future::multisession, workers = cores)
+dir.create(path = log, showWarnings = F)
+dir.create(path = outdir, showWarnings = F)
+```
+
+# Run -------------------------------------------------------------------------
+```{r}
+files_w_full_path <- list.files(path = datadir,
+                                pattern=".bam", 
+                                full.names = T)
+
+
+files_simplified <- files_w_full_path %>% 
+  basename() %>% 
+  str_remove(pattern="_S[0-9]{1,3}_R1_001.UMI_trimmed.fq_trimmed_bismark_bt2.deduplicated.bam")
+  #str_remove(pattern="_S[0-9]_R1_001.UMI_trimmed.fq_trimmed_bismark_bt2.deduplicated.bam")
+```
+
+
+## Generate coverage files --------------------------------------------------
+```{r}
+print("Generating coverage files...")
+furrr::future_map2(.x = files_w_full_path, 
+                   .y=files_simplified, 
+                   .f =~system2(command = "samtools",
+                                args = c("view", "-h" ,.x, "|", 
+                                         "python3 extract_CpG_data.py",
+                                         "-i -", 
+                                         "-o", file.path(outdir,paste0(.y, ".cov")),
+                                         "-v"),
+                                stdout = file.path(log, paste0(.y, "_cov_out.txt")),
+                                stderr = file.path(log, paste0(.y, "_cov_err.txt"))
+                   )
+)
+```
+
+
+## Combine CpG sites -------------------------------------------------------
+```{r}
+print("Combining CpG sites...")
+system2(command="python3",
+        args= c("combine_CpG_sites.py -v -o", file.path(outdir,"combined.csv"), 
+                file.path(outdir, paste0(basename(files_simplified), ".cov"))),
+        stdout = file.path(log, "combine_out.txt"),
+        stderr = file.path(log, "combine_err.txt"))
+```
+
+
+## Find DMRS ---------------------------------------------------------------
+```{r}
+meta_data_sheet <- readxl::read_xlsx(metadata)
+treatments <- meta_data_sheet %>%
+  pull(grouping) %>% unique()
+
+# pull IDS for each treatment
+grp_1_IDs <- meta_data_sheet %>% 
+  filter(.data[[grouping]]==treatments[1]) %>% 
+  pull(`Sample ID (Library ID)`)
+
+grp_2_IDs <- meta_data_sheet %>% 
+  filter(.data[[grouping]]==treatments[2]) %>% 
+  pull(`Sample ID (Library ID)`)
+
+print("Finding DMRs...")
+system2(command="Rscript",
+        args=c("findDMRs.r",
+               "-i", file.path(outdir, "combined.csv"),
+               "-o", file.path(outdir, "results.csv"),
+               "-v", 
+               "-n",
+               "Control,Exptl",
+               paste(grp_1_IDs, collapse = ","),
+               paste(grp_2_IDs, collapse = ",")),
+        stdout = file.path(log, "findDMRS_out.txt"),
+        stderr = file.path(log, "findDMRS_err.txt"))
+```

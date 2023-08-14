@@ -1,4 +1,7 @@
 # Arguments -------------------------------------------------------------------
+```{r setup}
+library(tidyverse)
+
 option_list = list(
   optparse::make_option(opt_str = c("-d", "--datadir"),
                         default = "data",
@@ -19,13 +22,14 @@ option_list = list(
                         default = "Condition1",
                         help = "Condition to group the samples by in the metadata-sheet [default= %default]")
 )
+```
 
 opt_parser = optparse::OptionParser(option_list=option_list)
 opt = optparse::parse_args(opt_parser)
 
 # Packages installation/loading -------------------------------------------
 suppressPackageStartupMessages({
-  library(tidyverse)
+  
 })
 
 
